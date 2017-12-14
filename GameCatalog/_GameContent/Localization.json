@@ -1,0 +1,28 @@
+{
+  "en": {
+    "For your safety we automatically logged you out. Do you want reload the game?": "For your safety we automatically logged you out. Do you want reload the game?",
+    "Reload": "Reload",
+    "Go to main page": "Go to main page",
+    "Load game failed. Reload game?": "Load game failed. Reload game?",
+    "Turn on music?": "Turn on music?",
+    "Ok": "Ok",
+    "Cancel": "Cancel",
+    "This round": "This round",
+    "Verify": "Verify",
+    "Server seed hash:": "Server seed hash:",
+    "Initial shuffle:": "Initial shuffle:",
+    "Server seed:": "Server seed:",
+    "Client seed:": "Client seed:",
+    "Final shuffle:": "Final shuffle:",
+    "Next round": "Next round",
+    "Feeling lucky? Enter any text up to 32 symbols here to test the fortune.": "Feeling lucky? Enter any text up to 32 symbols here to test the fortune.",
+    "Sorry, we have to shutdown this game in {0} seconds. Your unfinished bets will be returned. We are trying to get the game back to you ASAP.": "Sorry, we have to shutdown this game in {0} seconds. Your unfinished bets will be returned. We are trying to get the game back to you ASAP.",
+    "Sorry, we have to restart the game in {0} seconds.  Your unfinished bets will be returned. Game will be back shortly.": "Sorry, we have to restart the game in {0} seconds.  Your unfinished bets will be returned. Game will be back shortly.",
+    "We have detected some troubles and paused  the gaming. Please stay with us, we'll fix this issue shortly.": "We have detected some troubles and paused  the gaming. Please stay with us, we'll fix this issue shortly.",
+    "Gaming is resumed, please enjoy.": "Gaming is resumed, please enjoy.",
+    "This game session is over. Thank you for playing.": "This game session is over. Thank you for playing.",
+    "Time left: {0}": "Time left: {0}",
+    "sec.": "sec."
+
+  }
+}

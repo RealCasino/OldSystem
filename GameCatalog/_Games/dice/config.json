@@ -1,0 +1,26 @@
+{
+  "": {
+    "layout": {
+      "default": {
+        "direction": "Landscape",
+        "aspectRatio": "16x9"
+      },
+      "mobile": {
+        "direction": "Portrait",
+        "aspectRatio": "16x9"
+      }
+    }
+  },
+  "Client2":{  
+      "layout":{  
+         "default":{  
+            "direction":"Landscape",
+            "aspectRatio":"16x9"
+         },
+         "mobile":{  
+            "direction":"Portrait",
+            "aspectRatio":"16x9"
+         }
+      }
+   },
+}

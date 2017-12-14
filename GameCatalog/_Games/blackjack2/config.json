@@ -1,0 +1,50 @@
+{
+    "": {
+        "layout": {
+            "default": {
+                "direction": "Landscape",
+                "aspectRatio": "16x9"
+            },
+             "mobile":{
+                "direction":"PortraitLandscape",
+                "aspectRatio":"16x9"
+             }
+        }
+    },
+    "Client2": {
+        "layout": {
+            "default": {
+                "direction": "Landscape",
+                "aspectRatio": "16x9"
+            },
+             "mobile":{
+                "direction":"PortraitLandscape",
+                "aspectRatio":"16x9"
+             }
+        }
+    },
+    "Client3": {
+        "layout": {
+            "default": {
+                "direction": "Landscape",
+                "aspectRatio": "16x9"
+            },
+             "mobile":{
+                "direction":"PortraitLandscape",
+                "aspectRatio":"16x9"
+             }
+        }
+    },
+    "Client4": {
+        "layout": {
+            "default": {
+                "direction": "Landscape",
+                "aspectRatio": "16x9"
+            },
+             "mobile":{
+                "direction":"PortraitLandscape",
+                "aspectRatio":"16x9"
+             }
+        }
+    }
+}

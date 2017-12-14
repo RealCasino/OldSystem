@@ -1,0 +1,125 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Casino TV - Blackjack Game</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="/_GameScripts/phaser.min.js"></script>
+    <script src="/_GameScripts/jquery-2.1.1.min.js"> </script>
+    <script src='/_GameScripts/Config.js'></script>
+    <script src="/_GameScripts/FontLoader.js"></script>
+    <script src="/_GameScripts/Client.js"></script>
+    <script src="/_GameScripts/phaser.utils.js"></script>
+</head>
+<body>
+
+    <div id="main" class="main">
+        <div id="content" style="">
+            <div id="video" class="video" style="display:none"></div>
+            <div id="canvas"></div>
+        </div>
+    </div>
+    <script src="js/MessageDispatcher.js"></script>
+    <script src="js/LandscapeGame.js"></script>
+    <script src="js/PortraitGame.js"></script>
+
+    <script type="text/javascript">
+        var game,
+            mode, Game;
+        GAME_WIDTH = 1620;
+        GAME_HEIGHT = 996;
+        SCALE = 1;
+        var modes = {
+            portrait: 0,
+            landscape: 1
+        };
+        $(document).ready(function () {
+            mode = modes.portrait;
+            if (isMobile.pad() || !isMobile.any()) {
+                GAME_WIDTH = 1620;
+                GAME_HEIGHT = 996;
+                mode = modes.landscape;
+                Game = BJLandscapeGame;
+            } else {
+                GAME_WIDTH = 750;
+                GAME_HEIGHT = 1334;
+                mode = modes.portrait;
+                Game = BJPortrateGame;
+            }
+            SCALE = Math.min($(document).innerWidth() / GAME_WIDTH, $(document).innerHeight() / GAME_HEIGHT);
+            game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.CANVAS, 'canvas', null, true);
+            $.client = new Client().initialize(function (msg) {
+                MessageDispatcher.handle(msg);
+            }, function (err) {
+                console.log(err);
+            });
+            $.client.setProgressBarPercent(50);
+
+            function startGame(config) {
+                var fontLoader = new FontLoader(["ProximaNova"], {
+                    "fontsLoaded": function (error) {
+                        if (error !== null) {
+                            console.log(error);
+                            console.log("Wait for fonts loaded");
+                            setTimeout(function () {
+                                startGame(config);
+                            }, 2000);
+                        } else {
+                            game.state.add('Boot', Game.Boot);
+                            game.state.add('Preloader', Game.Preloader);
+                            game.state.add('Game', Game.Game);
+                            game.state.start('Boot');
+                            $.client.joinGame(function (data) {
+                                $.client.getVideoPlayer('video', true);
+                                $('#video').show();
+                                console.log("user joined");
+                            }, function () {
+                                console.log("user not joined");
+                            });
+
+                        }
+                    }
+                });
+                fontLoader.loadFonts();
+            }
+
+            $.client.getConfiguration(function (config) {
+                startGame(config);
+            });
+
+        });
+
+        function changeVideoSize() {
+            var video, canvas, getTopPos, topPos, leftPos = 0, videoHeight, videoWidth;
+            canvas = $("#canvas canvas");
+            if (mode == modes.portrait) {
+                video = $("#video");
+                videoHeight = canvas.height() / 100 * 35;
+                videoWidth = canvas.width();
+                video.width(videoWidth);
+                video.height(videoHeight);
+                leftPos = (window.innerWidth / 2) - (videoWidth / 2);
+                if (leftPos > 0) {
+                    video.css({left:leftPos+'px' });
+                }
+                video.css({'zIndex':2});
+            } else {
+                video = $("#video");
+                videoWidth = canvas.width();
+                videoHeight = canvas.height() / 100 * 84;
+
+                video.width(videoWidth);
+                video.height(videoHeight);
+                leftPos = (window.innerWidth - canvas.width()) / 2;
+                if (leftPos > 0) {
+                    video.css({left:leftPos+'px', 'zIndex':-1 });
+                } else{
+                    video.css({ left: '0px', 'zIndex':-1});
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>

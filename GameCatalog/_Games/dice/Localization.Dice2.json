@@ -1,0 +1,38 @@
+
+{
+"en": 
+{
+"Swipe stake to cancel": "Swipe stake to cancel",
+	"makeStake": "Bet",
+	"gameStatus": "Game state",
+	"placeYourBet": "- Place your bets -",
+	"noMoreBets": "- No more bets -",
+	"tableClosed": "- Table closed! -",
+	"StakeFailedNoMoreBets": "Bet falied. No more bets",
+	"StakeSuccess": "Bet accepted",
+	"betConfirmed": "Bet accepted",
+	"You win": "- You win: \u20ac{$win_sum} -",
+	"You lost": "- You lost -",
+	"Wins": "- Wins: {$win_number} -",
+	"Bet description": "Bet description",
+	"Amount": "Amount",
+	"Pays": "Pays",
+	"Status": "Status",
+	"pending": "pending",
+	"accepted": "accepted",
+	"rejected": "rejected",
+	"canceled": "canceled",
+	"completed": "completed",
+	"StakeCanceled": "Bets canceled",
+	"CancelBetsError": "Canceling  bet failed",
+	"Place bet": "Place bet",
+	"Welcome": "Welcome {$user}",
+	"Play for fun": "Play for fun.",
+	"Insufficient funds to rate": "Insufficient funds to rate",
+	"Clear all": "Clear all",
+	"Cancel all": "Cancel all",
+	"Bet": "Bet:",
+	"Balance": "Balance:",
+	"No more bets": "No more bets"
+}
+}

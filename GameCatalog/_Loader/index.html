@@ -1,0 +1,735 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<style>
+    @font-face {
+    font-family: 'ProximaNova';
+    src: url('/_GameContent/fonts/proximanova.eot');
+    src: url('/_GameContent/fonts/proximanova.eot?#iefix') format('embedded-opentype'),
+         url('/_GameContent/fonts/proximanova.woff') format('woff'),
+         url('/_GameContent/fonts/proximanova.ttf') format('truetype'),
+         url('/_GameContent/fonts/proximanova.svg#ProximaNova') format('svg');
+    font-style: normal;
+    font-weight: normal;
+    }
+    body {
+        font-family: 'ProximaNova';
+        padding:0;
+    }
+     .skipBtn {
+         position: absolute;
+         cursor: pointer;
+         bottom: 15px;
+         right: 20px;
+         color: #fff;
+         font-size: 20px;
+     }
+
+    .swipe_message_wrap {
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        position: absolute;
+        opacity: 0.8;
+        font-size: 3em;
+        text-align: center;
+        color: #fff;
+        z-index: 2000;
+        display: table;
+        }
+    .rotate_message_wrap, .old_device_message_wrap{
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        position: fixed;
+        font-size: 1.5em;
+        text-align: center;
+        color: #fff;
+        z-index: 2000;
+        display: table;
+    }
+    .rotate_message, .old_device_message{
+        position: relative;
+        animation-delay: 0.5s;
+        -webkit-animation-delay: 0.5s;
+        -moz-animation-delay: 0.5s;
+        animation-delay: 0.5s;
+    }
+    .rotate_portrait {
+        background-image: url('Images/portrait_only.gif');
+        width: 150px;
+        height: 150px;
+        background-size: contain;
+        margin: 10% auto 0 auto;
+    }
+    .rotate_landscape {
+        background-image: url('Images/landscape_only.gif');
+        width: 150px;
+        height: 150px;
+        background-size: contain;
+        margin: 50% auto 0 auto;
+    }
+    .swipe_message{
+        position: relative;
+    }
+    .swipe_message_ico{
+        background-image: url('Images/swipe-top.png');
+        width: 200px;
+        height: 200px;
+        margin: auto;
+        top: 50px;
+        position: relative;
+        animation-delay: 0.5s;
+        -webkit-animation-delay: 0.5s;
+        -moz-animation-delay: 0.5s;
+        animation-delay: 0.5s;
+    }
+    .swing{
+        -webkit-animation:swinging 10s ease-in-out 0s infinite;
+        -moz-animation:swinging 10s ease-in-out 0s infinite;
+        animation:swinging 10s ease-in-out 0s infinite;
+        -webkit-transform-origin:50% 0;
+        -moz-transform-origin:50% 0;
+        transform-origin:50% 0;
+    }
+
+    @-webkit-keyframes swinging{
+        0% { -webkit-transform: rotate(0); }
+        5% { -webkit-transform: rotate(10deg); }
+        10% { -webkit-transform: rotate(-9deg); }
+        15% { -webkit-transform: rotate(8deg); }
+        20% { -webkit-transform: rotate(-7deg); }
+        25% { -webkit-transform: rotate(6deg); }
+        30% { -webkit-transform: rotate(-5deg); }
+        35% { -webkit-transform: rotate(4deg); }
+        40% { -webkit-transform: rotate(-3deg); }
+        45% { -webkit-transform: rotate(2deg); }
+        50% { -webkit-transform: rotate(0); }
+        100% { -webkit-transform: rotate(0); }
+    }
+
+    @-moz-keyframes swinging{
+        0% { -moz-transform: rotate(0); }
+        5% { -moz-transform: rotate(10deg); }
+        10% { -moz-transform: rotate(-9deg); }
+        15% { -moz-transform: rotate(8deg); }
+        20% { -moz-transform: rotate(-7deg); }
+        25% { -moz-transform: rotate(6deg); }
+        30% { -moz-transform: rotate(-5deg); }
+        35% { -moz-transform: rotate(4deg); }
+        40% { -moz-transform: rotate(-3deg); }
+        45% { -moz-transform: rotate(2deg); }
+        50% { -moz-transform: rotate(0); }
+        100% { -moz-transform: rotate(0); }
+    }
+
+    @keyframes swinging{
+        0% { transform: rotate(0); }
+        5% { transform: rotate(10deg); }
+        10% { transform: rotate(-9deg); }
+        15% { transform: rotate(8deg); }
+        20% { transform: rotate(-7deg); }
+        25% { transform: rotate(6deg); }
+        30% { transform: rotate(-5deg); }
+        35% { transform: rotate(4deg); }
+        40% { transform: rotate(-3deg); }
+        45% { transform: rotate(2deg); }
+        50% { transform: rotate(0); }
+        100% { transform: rotate(0); }
+    }
+    .rtmp-stub {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .fullscreen {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        z-index: 10;
+        cursor: pointer;
+        background-image: url('Images/fullscreen.png');
+        background-size: 50px;
+        width: 25px;
+        height: 25px;
+        margin: 8px;
+    }
+    .fs-min {
+        background-position: 25px 0px;
+    }
+    .fs-max {
+        background-position: 0px 0px;
+    }
+    .home_btn {
+        height: 55px;
+        font-size: 32px;
+        border: 3px solid #fff;
+        width: 150px;
+        margin: 0 auto;
+        line-height: 58px;
+        border-radius: 10px;
+    }
+    .home_wrap {
+        bottom: 30px;
+        width: 100%;
+        position: absolute;
+    }
+</style>
+<script src='../_GameScripts/Config.js'> </script>
+<script src='../_GameScripts/Client.js'> </script>
+<script src="../_GameScripts/jquery-2.1.1.min.js"> </script>
+<script src="../_GameScripts/handlebars-v1.3.0.js"> </script>
+<script>
+    var layouts = {
+        portrait: "Portrait",
+        landscape: "Landscape",
+        portraitLandscape: "PortraitLandscape",
+    };
+    var gameDirection;
+    var lobbyUrl;
+    function checkOrientation() {
+        var curDirection;
+        if (window.matchMedia("(orientation: portrait)").matches) {
+            curDirection = layouts.portrait;
+        } else {
+            curDirection = layouts.landscape;
+        }
+        if (isMobile.any() && !isMobile.pad()) {
+            if (curDirection != gameDirection  && gameDirection != layouts.portraitLandscape) {
+                if ($('.rotate_message_wrap').length) {
+                    $('.rotate_message_wrap').remove();
+                }
+                var rotateMsg = "<div class='rotate_message_wrap'>";
+                    if (curDirection == layouts.portrait) {
+                        rotateMsg += "<div class='rotate_landscape' />";
+                    } else {
+                        rotateMsg += "<div class='rotate_portrait' />";
+                    }
+                    rotateMsg += "<div class='rotate_message'>Please rotate your device</div>";
+                    rotateMsg += "<div class='home_wrap'><div class='home_btn'>HOME</div></div></div>";
+                    $("body").prepend(rotateMsg);
+                    $(".home_btn").on('click', function () {
+                        disableFullScreen();
+                        if (window.parent != window) {
+                            window.parent.postMessage({ type: 'home' }, "*");
+                        } else {
+                            if (lobbyUrl) {
+                                if ((new RegExp("^https\:|http:\?")).test(lobbyUrl))
+                                    window.location.href = lobbyUrl;
+                                else
+                                    window.location.href = window.location.protocol + "//" + lobbyUrl;
+                            } else
+                                window.parent.postMessage({ type: 'home' }, "*");
+                        }
+                    });
+
+            } else {
+                if ($('.rotate_message_wrap').length)
+                    $('.rotate_message_wrap').remove();
+            }
+
+        }
+    }
+    function checkFullScreen() {
+        if (!(new RegExp("^Win").test(navigator.platform)) && !((new RegExp("^Mac").test(navigator.platform)))) {
+            if (isMobile.iPhone()) {
+                if (!window.matchMedia("(orientation: portrait)").matches) {
+                    var ratio = window.devicePixelRatio || 1;
+                    var w = screen.availWidth * ratio;
+                    var h = screen.availHeight * ratio;
+                    var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 0;
+                    var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
+                    showTooltip = Math.abs(parseFloat(width/height).toFixed(2)) > 2.0;
+                    sc = parseFloat(width/height).toFixed(2);
+                    if (showTooltip) {
+                        if (!$('.swipe_message_wrap').length)
+                            $("body").prepend("<div class='swipe_message_wrap'><div class='swipe_message_ico swing'></div><div class='swipe_message'>Please swipe to top</div></div>");
+                        $('.swipe_message').css('top', 30);
+                        return true;
+                    } else {
+                        if ($('.swipe_message_wrap').length)
+                            $('.swipe_message_wrap').remove();
+                        return false;
+                    }
+                } else {
+                    if ($('.swipe_message_wrap').length)
+                        $('.swipe_message_wrap').remove();
+                    return false;
+                }
+            }
+        }
+    }
+    function detectOldOS() {
+        var info;
+        if (isMobile.iOS) {
+            info = navigator.userAgent.match(/OS (\d+)_(\d+)_?(\d+)?/);
+            if (info && 8 > parseInt(info[1], 10)) {
+                $("body").prepend("<div class='old_device_message_wrap'><div class='old_device_message swing'>This game is compatible only with IOS 8.0 or higher</div></div>");
+                $('.old_device_message').css('top', 150);
+            }
+        }
+    }
+
+    function showIntro(path) {
+        if (!isMobile.any()) {
+            document.getElementById("frame").muted = true;
+            if (!$("#intro-player").length) {
+                var introPlayer = '<div id="intro-player" class="intro" style="display:none;"><video id="player" class="player" last="true" width="100%" height="100%" src=' + path + ' webkit-playsinline="webkit-playsinline"  style="image-fit: fill;object-fit: fill;position:absolute;  background: #000;" poster="/_GameContent/Images/loading.gif"></video><div class="intro-stub"></div></div>';
+                $("#intro").append(introPlayer);
+                $("#intro").append("<div class='skipBtn'>SKIP<div>");
+                var poster = new Image();
+                poster.src = "/_GameContent/Images/loading.gif";
+                poster.onload = function() {
+                    $("#intro-player").show();
+                };
+                if (getCookie('sound_mute')=='true') {
+                    $("#player").prop("muted", true);
+                }
+                document.getElementById("frame").muted = true;
+                document.getElementById("frame").contentWindow.postMessage({ type: 'mute', muted: true }, "*");
+                var hideFunc = function () {
+                    $(".intro").fadeOut(300, function() {
+                        $("#player").src = "";
+                        $("#intro-player").remove();
+                        $('.skipBtn').remove();
+                        $("#intro").remove();
+                        $('#frame').css("opacity", 1);
+                        document.getElementById("frame").muted = false;
+                        document.getElementById("frame").contentWindow.postMessage({ type: 'mute', muted: false }, "*");
+                    });
+                };
+                $('.skipBtn').on('click', hideFunc);
+                document.getElementById("player").addEventListener('ended', hideFunc, false);
+                $('#intro-stub').on('click', function(e) {
+                    e.stopPropagation();
+                    if (e.target !== this)
+                        return;
+                });
+
+            }
+        }
+        return document.getElementById("player");
+    }
+
+    function toggleFullScreen() {
+        if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+        (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+            if (document.documentElement.requestFullScreen) {
+                document.documentElement.requestFullScreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullScreen) {
+                document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+        }
+    }
+
+    function enableFullScreen(enable) {
+        var target = document.getElementById("body");
+        if (enable) {
+            if (target.requestFullScreen) {
+                target.requestFullScreen();
+            } else if (target.mozRequestFullScreen) {
+                target.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullScreen) {
+                target.webkitRequestFullScreen();
+            }
+            $('#frame').css('pointer-events', "all");
+        } else {
+            if (target.cancelFullScreen) {
+                target.cancelFullScreen();
+            } else if (target.mozCancelFullScreen) {
+                target.mozCancelFullScreen();
+            } else if (target.webkitCancelFullScreen) {
+                target.webkitCancelFullScreen();
+            }
+        }
+    }
+    function disableFullScreen(){
+        if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+        (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+
+        }else{
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        var params = getQueryParams(document.location.search);
+        var layouts;
+        var templateUrl = "templates/LoaderTemplate.hbs.html";
+        if (window.parent === window) {
+            $('body').css("background-color", "#000");
+        } else {
+            $('body').css("background-color", "transparent");
+        }
+        lobbyUrl = params.lobbyUrl;
+         $.ajax({
+            url: templateUrl,
+            async: true,
+            success: function(data) {
+                var loaderTemplate = Handlebars.compile(data)();
+                if (params.casinoId) {
+                    templateUrl = "templates/" + params.casinoId + "/LoaderTemplate.hbs.html?_=" + randomId();
+                    $.ajax({
+                        url: templateUrl,
+                        async: true,
+                        success: function(data) {
+                            loaderTemplate = Handlebars.compile(data)();
+                            $('body').append(loaderTemplate);
+                        },
+                        error: function() {
+                            $('body').append(loaderTemplate);
+                        }
+                    });
+                } else {
+                    $('body').append(loaderTemplate);
+                }
+            }
+        });
+
+        var manualGameProgressBar = true;
+        var introPath;
+        var gameLoaded=false;
+        var clientId = getCookie(params.gameId);
+        var introPlayer;
+        var frame = document.createElement("iframe");
+        document.body.insertBefore(frame, document.getElementById("intro"));
+        frame.id = 'frame';
+        frame.style.width = "100%";
+        frame.style.height = "100.5%";
+        frame.style.display = "block";
+        frame.style.margin = "auto";
+        frame.style.opacity = "0";
+        frame.style['z-index'] = "-10";
+        frame.setAttribute("frameborder", "0");
+        frame.setAttribute("marginheight", "0");
+        frame.setAttribute("marginwidth", "0");
+        frame.setAttribute("scrolling", "no");
+        frame.setAttribute("allowtransparency", "false");
+        setTimeout(function () {
+            $.ajax({
+                url: GATEWAY_SERIVCE_URL +'get_body' + location.search + (clientId ? "&clientId=" + clientId : ""),
+                async: true,
+                dataType: "json",
+                success: function(data) {
+                    if (data.IsSuccess) {
+                        if (!data.ResponseData)
+                            window.location.reload();
+                        if (isMobile.any())
+                            gameDirection = data.ResponseData.info.layouts.mobile.direction;
+                        else
+                            gameDirection = data.ResponseData.info.layouts.default.direction;
+                        detectOldOS();
+                        manualGameProgressBar = false;
+                        introPath = data.ResponseData.info.introVideoUrl;
+                        layouts = data.ResponseData.info.layouts;
+                        if (isMobile.Android() && window.innerHeight !== screen.height) {
+                            $('#frame').css('pointer-events', "none");
+                        }
+                        $("body").on("click", function() {
+                            if (isMobile.Android() &&  window.innerHeight !== screen.height) {
+                                enableFullScreen(true);
+                            }
+                        });
+                        if ((new RegExp("^(http|https)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,9}(/\S*)?")).test(data.ResponseData.data)) {
+                            var gameUrl = data.ResponseData.data + '&' + $.param(params);
+                            $("#frame").on("load", function (e) {
+                                if (introPath && !isMobile.any()) {
+                                    introPlayer = showIntro(introPath);
+                                    var canPlayFunc = function (e) {
+                                        if (!gameLoaded)
+                                            introPlayer.pause();
+                                    };
+                                    introPlayer.addEventListener('canplay', canPlayFunc, false);
+                                    introPlayer.play();
+                                }
+                                e.preventDefault();
+                                if (!manualGameProgressBar)
+                                    setTimeout(function () {
+                                        if (!manualGameProgressBar) {
+                                            setProgressBarPercent(100, function () {
+                                                window.addEventListener('resize', function () {
+                                                    checkOrientation();
+                                                    resizeGameFrame();
+                                                    $(window).trigger('resize');
+                                                });
+                                                window.addEventListener("orientationchange", function () {
+                                                    checkOrientation();
+                                                }, false);
+                                                checkOrientation();
+                                                window.parent.postMessage({ type: 'loadSuccess' }, "*");
+                                                gameLoaded = true;
+                                                if (introPlayer) {
+                                                    introPlayer.play();
+                                                    $("#intro").show();
+                                                }
+                                                if (!introPath || isMobile.any())
+                                                    $('#frame').css("opacity", 1);
+                                            });
+                                        }
+                                    }, 2000);
+                            });
+                            frame.src = gameUrl;
+                        } else {
+                            var iframeDocument = document.querySelector('#frame').contentWindow.document;
+                            iframeDocument.open('text/html', 'replace');
+                            iframeDocument.write(data.ResponseData.data);
+                            iframeDocument.close();
+                        }
+                        setProgressBarPercent(30);
+                    } else {
+                        var code = data.ResponseCode;
+                        $("#frame").attr('src', "");
+                        if (code==="GenericError") {
+                            if (data.ResponseData && data.ResponseData.offline_image) {
+                                $("body").html("<div style='display: table;position: absolute;height: 100%'><div style='vertical-align: middle;display: table-cell'><img src='" + data.ResponseData.offline_image + "' style='width:100%;'></img></div></div>");
+                            } else {
+                                $("body").html("<div style='text-align:center;padding-top: 20%;color:#808080'>There was an error, please retry later.</div>");
+                            }
+                        } else if (code==="GameNotAvailable") {
+                            if (data.ResponseData && data.ResponseData.offline_image) {
+                                $("body").html("<div style='display: table;position: absolute;height: 100%'><div style='vertical-align: middle;display: table-cell'><img src='" + data.ResponseData.offline_image + "' style='width:100%;'></img></div></div>");
+                            } else {
+                                $("body").html("<div style='text-align:center;padding-top: 20%;color:#808080'>Game not available, please retry later.</div>");
+                            }
+                        } else if (code==="InsufficientBalance") {
+                            $("body").html("<div style='text-align:center;padding-top: 20%;color:#808080'>Insufficient balance, please retry later.</div>");
+                        } else if (code==="SessionExpired") {
+                            createCookie("gameId", params.gameId);
+                            if (window.parent != window) {
+                                window.parent.postMessage({ type: 'refresh' }, "*");
+                            } else {
+                                if (lobbyUrl)
+                                    if ((new RegExp("^https\:|http:\?")).test(lobbyUrl))
+                                        window.location.href = lobbyUrl;
+                                    else
+                                        window.location.href = window.location.protocol + "//" + lobbyUrl;
+                                else {
+                                    $("body").html("<div style='text-align:center;padding-top: 20%;color:#808080'>Error! Session expired.</div>");
+                                }
+                            }
+                        } else if (code==="LoginRequired") {
+                            if (window.parent != window) {
+                                window.parent.postMessage({ type: 'error', code:"LoginRequired", message: "Login required" }, "*");
+                            } else {
+                                if (lobbyUrl) {
+                                    var url;
+                                    if ((new RegExp("^https\:|http:\?")).test(lobbyUrl))
+                                        url = lobbyUrl;
+                                    else
+                                        url = window.location.protocol + "//" + lobbyUrl;
+                                    url += (url.split('?')[1] ? '&' : '?') + "login=true";
+                                    window.location.href = url;
+                                } else {
+                                    $("body").html("<div style='text-align:center;padding-top: 20%;color:#808080'>Error. Login required.</div>");
+                                }
+                            }
+                        } else {
+                            $("body").html("<div style='text-align:center;padding-top: 20%;color:#808080'>There was an error, please retry later.</div>");
+                        }
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                    if (window.parent != window) {
+                        window.parent.postMessage({ type: 'error', message: err }, "*");
+                        window.parent.postMessage({ type: 'refresh' }, "*");
+                    } else {
+                        if (lobbyUrl)
+                            if ((new RegExp("^https\:|http:\?")).test(lobbyUrl))
+                                window.location.href = lobbyUrl;
+                            else
+                                window.location.href = window.location.protocol + "//" + lobbyUrl;
+                        else {
+                            if (window.history.length > 2) {
+                                window.history.back();
+                            } else {
+                                $("body").html("<div style='text-align:center;padding-top: 20%;color:#808080'>There was an error, please retry later.</div>");
+                            }
+                        }
+                    }
+                }
+            });
+            var n = 0;
+            var imgs = $("#frame").contents().find('img');
+            var val = (90 - n) / imgs.length;
+            imgs.load(function() {
+                n = n + val;
+                setProgressBarPercent(n);
+            });
+        }, 2000);
+        var fullscreen = false;
+        function onfullscreenchange() {
+            if ($(".fullscreen").hasClass("fs-min")) {
+                $(".fullscreen").removeClass("fs-min");
+                $(".fullscreen").addClass("fs-max");
+            } else {
+                $(".fullscreen").removeClass("fs-max");
+                $(".fullscreen").addClass("fs-min");
+            }
+        }
+        window.onresize = function() {
+            if (window.outerWidth === screen.width && window.outerHeight === screen.height) {
+                if (!fullscreen) {
+                    fullscreen = true;
+                    onfullscreenchange(true);
+                }
+            } else {
+                if (fullscreen) {
+                    fullscreen = false;
+                    onfullscreenchange(false);
+                    if (isMobile.Android()) {
+                        $('#frame').css('pointer-events', "none");
+                    }
+                }
+            }
+        };
+        if (!isMobile.any()) {
+            $("body").append("<div class='fullscreen fs-max'></div>");
+            $(".fullscreen").on('click', function(event) {
+                toggleFullScreen();
+            });
+
+        }
+
+        function listener(event) {
+            if (event.data.type == "progress") {
+                manualGameProgressBar = true;
+                resizeGameFrame();
+                setProgressBarPercent(event.data.progress, function() {
+                    window.parent.postMessage({ type: 'loadSuccess' }, "*");
+                    window.addEventListener('resize', function () {
+                        $(window).trigger('resize');
+                        checkOrientation();
+                    });
+                    window.addEventListener("orientationchange", function () {
+                        checkOrientation();
+                        resizeGameFrame();
+                    }, false);
+                    checkOrientation();
+                    resizeGameFrame();
+                    gameLoaded = true;
+                    if (introPlayer) {
+                        introPlayer.play();
+                        $("#intro").show();
+                    }
+                    if (!introPath || isMobile.any())
+                        $('#frame').css("opacity", 1);
+
+                });
+            } else if (event.data.type == "refresh") {
+                createCookie("gameId", params.gameId);
+                if (window.parent != window) {
+                    window.parent.postMessage({ type: 'refresh' }, "*");
+                } else {
+                    if (lobbyUrl)
+                        if ((new RegExp("^https\:|http:\?")).test(lobbyUrl))
+                            window.location.href = lobbyUrl;
+                        else
+                            window.location.href = window.location.protocol + "//" + lobbyUrl;
+                    else
+                        window.location.reload();
+                }
+                $("#frame").attr('src', "");
+            } else if (event.data.type == "reload") {
+                window.location.reload();
+            } else if (event.data.type == "gameSize") {
+                window.parent.postMessage({ type: 'gameSize', size: event.data.size }, "*");
+            } else if (event.data.type == "user_info") {
+                window.parent.postMessage({ type: 'user_info', balance: event.data.balance }, "*");
+            } else if (event.data.type == "home") {
+                disableFullScreen();
+
+                if (window.parent != window) {
+                    window.parent.postMessage({ type: 'home' }, "*");
+                } else {
+                    if (lobbyUrl)
+                        if ((new RegExp("^https\:|http:\?")).test(lobbyUrl))
+                            window.location.href = lobbyUrl;
+                        else
+                            window.location.href = window.location.protocol + "//" + lobbyUrl;
+                }
+            } else if (event.data.type == "cashier") {
+                if (window.parent != window) {
+                    window.parent.postMessage({ type: 'cashier' }, "*");
+                } else {
+                    if (lobbyUrl) {
+                        var url;
+                        if ((new RegExp("^https\:|http:\?")).test(lobbyUrl))
+                            url = lobbyUrl;
+                        else
+                            url = window.location.protocol + "//" + lobbyUrl;
+                        url += (url.split('?')[1] ? '&' : '?') + "target=cashier";
+                        window.location.href = url;
+                    }
+                }
+            } else if (event.data.type == "redirect") {
+                if (window.parent != window) {
+                    window.parent.postMessage(event.data, "*");
+                } else {
+                    if (event.data.url) {
+                        var url;
+                        if ((new RegExp("^https\:|http:\?")).test(event.data.url))
+                            url = event.data.url;
+                        else
+                            url = window.location.protocol + "//" + event.data.url;
+                        window.location.href = url;
+                    }
+                }
+            } else {
+                if (window.parent != window) {
+                    window.parent.postMessage(event.data, "*");
+                }
+            }
+        }
+        function resizeGameFrame() {
+            var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 0;
+            var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
+            var ratio = window.devicePixelRatio || 1;
+            var w = screen.width * ratio;
+            var h = screen.height * ratio;
+            if (layouts && (isMobile.iPhone() || isMobile.androidPhone()) && !window.matchMedia("(orientation: portrait)").matches) {
+                layouts.mobile.aspectRatio.split('x')[0]
+                width = height / layouts.mobile.aspectRatio.split('x')[1] * layouts.mobile.aspectRatio.split('x')[0];
+            }
+            nHeight = $(window).height();
+            $("#frame").width(width);
+            $("#frame").height(nHeight);
+        }
+        if (window.addEventListener) {
+            addEventListener("message", listener, false);
+        } else {
+            attachEvent("onmessage", listener);
+        }
+
+        window.addEventListener('resize', function (event) {
+            setTimeout(function () {
+                resizeGameFrame();
+            }, 250);
+        });
+    });
+
+</script>
+</head>
+<body id="body" style="margin: 0;">
+    <div id="intro" style="width: 100%; height: 100%;display:none;position: absolute;top: 0;">
+    </div>
+</body>
+</html>

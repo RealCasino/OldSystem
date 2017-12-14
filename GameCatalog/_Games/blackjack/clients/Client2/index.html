@@ -1,0 +1,140 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Casino TV - Blackjack Game</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="../../../../_GameScripts/phaser.min.js"></script>
+    <script src="../../../../_GameScripts/jquery-2.1.1.min.js"> </script>
+    <script src='../../../../_GameScripts/Config.js'></script>
+    <script src="../../../../_GameScripts/FontLoader.js"></script>
+    <script src="../../../../_GameScripts/Client.js"></script>
+    <script src="/GameCatalog/_GameScripts/phaser.utils.js"></script>
+</head>
+<body>
+
+    <div id="main" class="main">
+        <div id="content" style="">
+            <div id="video" class="video" style="display:none"></div>
+            <div id="canvas"></div>
+        </div>
+    </div>
+    <script src="js/Game.js"></script>
+    <script src="js/LandscapeGame.js"></script>
+    <script src="js/PortraitGame.js"></script>
+
+    <script type="text/javascript">
+        var game, mode, Game;
+            GAME_WIDTH = 1600,
+            GAME_HEIGHT = 980,
+            SCALE = 1,
+            GAME_CONFIG = {};
+        var modes = {
+            portrait: 0,
+            landscape: 1
+        };
+        $(document).ready(function () {
+            if (isMobile.any()) {
+                if (window.parent.matchMedia("(orientation: portrait)").matches) {
+                    GAME_WIDTH = 750;
+                    GAME_HEIGHT = 1334;
+                    mode = modes.portrait;
+                } else {
+                    GAME_WIDTH = 1600;
+                    GAME_HEIGHT = 980;
+                    mode = modes.landscape;
+                }
+
+            } else {
+                if ($(document).innerWidth() / $(document).innerHeight() > 1) {
+                    GAME_WIDTH = 1600;
+                    GAME_HEIGHT = 980;
+                    mode = modes.landscape;
+                    changeVideoSize();
+                } else {
+                    GAME_WIDTH = 750;
+                    GAME_HEIGHT = 1334;
+                    mode = modes.portrait;
+                    changeVideoSize();
+                }
+            }
+            SCALE = Math.min($(document).innerWidth() / GAME_WIDTH, $(document).innerHeight() / GAME_HEIGHT);
+            $.client = new Client().initialize(function (msg) {
+                if (window.parent.matchMedia("(orientation: portrait)").matches) {
+                    game.state.states.PortraitMain.messageDispatcher(msg);
+                }else{
+                    game.state.states.LandscapetMain.messageDispatcher(msg);
+                }
+            }, function (err) {
+                console.log(err);
+            });
+            $.client.setProgressBarPercent(40);
+
+            function startGame(config) {
+                var fontLoader = new FontLoader(["ProximaNova"], {
+                    "fontsLoaded": function (error) {
+                        if (error !== null) {
+                            console.log(error);
+                            console.log("Wait for fonts loaded");
+                            setTimeout(function () {
+                                startGame(config);
+                            },2000);
+                        } else {
+                            GAME_CONFIG = config.ResponseData;
+                            game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.CANVAS, 'canvas',null,true);
+                            game.state.add('Boot', BlackjackBoot);
+                            game.state.add('Load', BlackjackLoad);
+                            game.state.add('PortraitMain', PortraitMain);
+                            game.state.add('LandscapetMain', LandscapetMain);
+                            game.state.start('Boot');
+                            $.client.joinGame(function (data) {
+                                console.log("user joined");
+                                $.client.getVideoPlayer('video', true);
+                                $('#video').show();
+                            }, function () {
+                                console.log("user not joined");
+                            });
+                        }
+                    }
+                });
+                fontLoader.loadFonts();
+            }
+
+            $.client.getConfiguration(function (config) {
+                startGame(config);
+            });
+        });
+
+        function changeVideoSize() {
+            var video, canvas, getTopPos, topPos, leftPos, videoHeight, videoWidth;
+            canvas = $("#canvas canvas");
+            if (mode == modes.portrait) {
+                video = $("#video");
+                videoHeight = canvas.height() / 100 * 35;
+                videoWidth = canvas.width();
+                video.width(videoWidth);
+                video.height(videoHeight);
+                video.css({ left: '0px'});
+
+                leftPos = (window.innerWidth / 2) - (videoWidth / 2);
+                if (leftPos > 0) {
+                    video.css({left:leftPos+'px' });
+                }
+
+            } else {
+                video = $("#video");
+                videoHeight = canvas.height() / 100 * 40;
+                videoWidth = canvas.width() / 100 * 45;
+                video.width(videoWidth);
+                video.height(videoHeight);
+                leftPos = (window.innerWidth / 2) - (videoWidth / 2);
+                if (leftPos > 0) {
+                    video.css({left:leftPos+'px' });
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>

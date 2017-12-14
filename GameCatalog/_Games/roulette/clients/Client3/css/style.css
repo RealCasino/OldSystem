@@ -1,0 +1,194 @@
+@font-face {
+    font-family: 'ProximaNova';
+    src: url('/_GameContent/fonts/proximanova.eot');
+    src: url('/_GameContent/fonts/proximanova.woff') format('woff'),
+         url('/_GameContent/fonts/proximanova.ttf') format('truetype'),
+         url('/_GameContent/fonts/proximanova.svg#proximanova') format('svg'),
+         url('/_GameContent/fonts/proximanova.eot?#iefix') format('embedded-opentype');
+    font-style: normal;
+    font-weight: normal;
+}
+
+body {
+    font-family: 'ProximaNova';
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-size: 16px;
+    background-color: #141414;
+    color: #fff;
+    line-height: 1;
+}
+
+img{
+    border:none;
+}
+.main {
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+#canvas{
+    margin: auto;
+}
+canvas {
+    margin: 0 auto;
+}
+#canvas2{
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    display: none;
+}
+#canvas{
+    z-index: 4;
+}
+.portrait_video{
+    position: absolute;
+    top: 0;
+    z-index:200;
+    width: 43%;
+    height: 32%;
+    background-color: #000;
+    display:none;
+}
+.landscape_video {
+    position: absolute;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+}
+.no-cur {
+    cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjbQg61aAAAADUlEQVQYV2P4//8/IwAI/QL/+TZZdwAAAABJRU5ErkJggg=='),
+    url(images/blank.cur),
+    none !important;
+}
+
+.cubeScale{
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
+    -webkit-animation: animateScale 2s linear 0s forwards;
+    -moz-animation: animateScale 2s linear 0s forwards;
+    -o-animation: animateScale 2s linear 0s forwards;
+    animation: animateScale 2s linear 0s forwards;
+}
+@-webkit-keyframes animateScale {
+    from {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+@-moz-keyframes animateScale {
+    from {
+       -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    to {
+       -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+@-o-keyframes animateScale {
+    from {
+        -o-transform: scale(0);
+        transform: scale(0);
+    }
+    to {
+        -o-transform: scale(1);
+        transform: scale(1);
+    }
+}
+@keyframes animateScale {
+    from {
+        -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+        -o-transform: scale(0);
+        transform: scale(0);
+    }
+    to {
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+.cubeAntScale{
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation: animateAntScale 2s linear 0s forwards;
+    -moz-animation: animateAntScale 2s linear 0s forwards;
+    -o-animation: animateAntScale 2s linear 0s forwards;
+    animation: animateAntScale 2s linear 0s forwards;
+}
+@-webkit-keyframes animateAntScale {
+    from {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    to {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+}
+@-moz-keyframes animateAntScale {
+    from {
+       -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    to {
+       -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+}
+@-o-keyframes animateAntScale {
+    from {
+        -o-transform: scale(1);
+        transform: scale(1);
+    }
+    to {
+        -o-transform: scale(0);
+        transform: scale(0);
+    }
+}
+@keyframes animateAntScale {
+    from {
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+    }
+    to {
+        -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+        -o-transform: scale(0);
+        transform: scale(0);
+    }
+}

@@ -1,0 +1,72 @@
+@font-face {
+    font-family: 'ProximaNova';
+    src: url('/_GameContent/fonts/proximanova.eot');
+    src: url('/_GameContent/fonts/proximanova.woff') format('woff'),
+         url('/_GameContent/fonts/proximanova.ttf') format('truetype'),
+         url('/_GameContent/fonts/proximanova.svg#proximanova') format('svg'),
+         url('/_GameContent/fonts/proximanova.eot?#iefix') format('embedded-opentype');
+    font-style: normal;
+    font-weight: normal;
+}
+
+body {
+    font-family: 'ProximaNova';
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-size: 16px;
+    background-color: #141414;
+    color: #fff;
+    line-height: 1;
+}
+
+img{
+    border:none;
+}
+.main {
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+#canvas{
+    margin: auto;
+}
+canvas {
+    margin: 0 auto;
+}
+.portrait_video{
+    position: absolute;
+    top: 0;
+    width: 43%;
+    height: 27%;
+    background-color: #000;
+}
+.landscape_video {
+    position: absolute;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+}
+.no-cur {
+    cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjbQg61aAAAADUlEQVQYV2P4//8/IwAI/QL/+TZZdwAAAABJRU5ErkJggg=='),
+    url(images/blank.cur),
+    none !important;
+}

@@ -1,0 +1,77 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Casino TV - Blackjack Game</title>
+
+	<link rel="stylesheet" href="css/Styles.css" type="text/css" media="all" />
+
+    <script src='../../_GameScripts/Config.js'></script>
+    <script src="js/jquery-2.1.1.min.js"> </script>
+    <script src="../../_GameScripts/Client.js"> </script>
+    <script src="js/phaser.min.js"></script>
+    <script src="js/Game.js"> </script> 
+	
+    <script>
+        var Game;
+        $(document).ready(function () {
+            var size = {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+            var scalex = size.width > size.height ? size.height / GAME_HEIGHT : size.width / GAME_WIDTH;
+            var scaley = size.height / GAME_HEIGHT;
+
+            $.client = new Client().initialize(function (msg) {
+                Game.state.states.Game.messageDispatcher(msg);
+            }, function (err) {
+                console.log(err);
+            });        
+
+            $.client.getConfiguration(function (config) {
+                Game = new Phaser.Game(GAME_WIDTH * scalex, GAME_HEIGHT * scaley, Phaser.CANVAS, 'canvas');
+                Game.state.add('Preloader', BlackjackGame.Preloader);
+                Game.state.add('Game', BlackjackGame.Game);
+                Game.state.start('Preloader');
+
+                $.client.joinGame(function (data) {
+                    console.log("user joined");
+                }, function () {
+                    console.log("user not joined");
+                });
+            });
+
+            if (!isMobile.any()){
+                $("#content").css("display", "flex");
+            }
+            //changeVideoSize();
+            
+        });
+        
+        /*function changeVideoSize() {
+            var size = {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+            var scalex = size.width > size.height ? size.height / GAME_HEIGHT : size.width / GAME_WIDTH;
+            var scaley = size.height / GAME_HEIGHT;
+            $("#video").width($("canvas").width());
+            $("#video").height($("canvas").height()/100*41);
+            $("#video").css("top",$("canvas").height()/100*5.7);
+            $("#video").css("left", size.width / 2 - $("canvas").width()/2);
+        }
+        window.addEventListener('resize', function () {
+            changeVideoSize();
+        });*/
+  
+    </script>  
+    
+</head>
+
+<div id="main" class="main">
+	<div id="content" style="">
+	    <div id="canvas" style="margin: 0 auto;"></div>
+		<!-- <div id="video" class="video"></div> -->
+	</div>	
+</div>
+</html>

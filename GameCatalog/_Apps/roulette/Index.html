@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <script src='/GameCatalog/_GameScripts/Config.js'></script>
+    <script src="/GameCatalog/_GameScripts/Client.js"></script>
+    <script src="/GameCatalog/_GameScripts/phaser.min.js"></script>
+    <script src='/GameCatalog/_GameScripts/Config.js'></script>
+    <script src="/GameCatalog/_GameScripts/Client.js"></script>
+    <script src="/GameCatalog/_GameScripts/FontLoader.js"></script>
+    <script src="/GameCatalog/_GameScripts/jquery-2.1.1.min.js"> </script>
+   <script src="js/MessageDispatcher.js"></script>
+    <script src="js/Game.js"></script>
+
+</head>
+<script type="text/javascript">
+        var game,
+            mode, Game;
+        GAME_WIDTH = 1920;
+        GAME_HEIGHT = 1080;
+        SCALE = 1;
+        var modes = {
+            portrait: 0,
+            landscape: 1
+        };
+        $(document).ready(function () {
+
+            GAME_WIDTH = 1920;
+            GAME_HEIGHT = 1080;
+            mode = modes.landscape;
+            Game = Game;
+            SCALE = Math.min($(document).innerWidth() / GAME_WIDTH, $(document).innerHeight() / GAME_HEIGHT);
+            $.client = new Client(true).initialize(function (msg) {
+                MessageDispatcher.handle(msg);
+            }, function (err) {
+                console.log(err);
+            });
+            $.client.loadLocalization("_Apps/roulette/Localization.json");
+            $.client.setProgressBarPercent(50);
+            function startGame(config) {
+                var fontLoader = new FontLoader(["ProximaNova"], {
+                    "fontsLoaded": function (error) {
+                        if (error !== null) {
+                            console.log(error);
+                            console.log("Wait for fonts loaded");
+                            setTimeout(function () {
+                                startGame(config);
+                            }, 2000);
+                        } else {
+                            game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.CANVAS, 'canvas', null, true);
+                            game.state.add('Boot', Game.Boot);
+                            game.state.add('Preloader', Game.Preloader);
+                            game.state.add('MainMenu', Game.MainMenu);
+                            game.state.start('Boot');
+                            $.client.joinGame(function (data) {
+                                console.log("user joined");
+                            }, function () {
+                                console.log("user not joined");
+                            });
+                        }
+                    }
+                });
+                fontLoader.loadFonts();
+            }
+            $.client.getConfiguration(function (config) {
+                startGame(config);
+            });
+        });
+ 
+</script>
+<body>
+    <div id="main" class="main">
+        <div id="canvas" style="position: relative;"></div>
+    </div>
+</body>
+</html>

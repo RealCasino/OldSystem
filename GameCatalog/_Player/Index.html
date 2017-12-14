@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src='../_GameScripts/Config.js'></script>
+    <script src="../_GameScripts/Client.js"></script>
+    <script src="../_GameScripts/jquery-2.1.1.min.js"> </script>
+</head>
+<body>
+<style>
+       @font-face {
+            font-family: 'ProximaNova';
+        src: url('/_GameContent/fonts/proximanova.eot');
+        src: url('/_GameContent/fonts/proximanova.eot?#iefix') format('embedded-opentype'),
+         url('/_GameContent/fonts/proximanova.woff') format('woff'),
+         url('/_GameContent/fonts/proximanova.ttf') format('truetype'),
+         url('/_GameContent/fonts/proximanova.svg#ProximaNova') format('svg');
+        font-style: normal;
+            font-weight: normal;
+        }
+       body {
+             font-family: 'ProximaNova';
+       }
+     .fullscreen {
+         position: absolute;
+         top: 2px;
+         right: 2px;
+         z-index: 10;
+         cursor: pointer;
+         background-image: url('../_Loader/Images/fullscreen.png');
+         background-size: 50px;
+         width: 25px;
+         height: 25px;
+         margin: 8px;
+     }
+    .fs-min {
+        background-position: 25px 0px;
+    }
+    .fs-max {
+        background-position: 0px 0px;
+    }
+    .menu_widget.menuTop_logo_white {
+        background-size: 140px;
+        background-image:url(/_GameContent/Images/logo.png); 
+        background-repeat: no-repeat;
+        overflow: hidden; 
+        text-indent: 300px; 
+        width: 140px;
+        height: 45px;
+        float: left;
+        margin-top: 5px; 
+        margin-right: 25px;
+        cursor: pointer;
+    }
+    .quality-box {
+        position: absolute;
+        right: 4px;
+        top: 33px;
+        color:#fff;
+        min-width: 45px;
+        font-size:15px;
+        cursor:pointer;
+        z-index:300;
+    }
+    .current-quality {
+        text-align: center;
+    }
+    .quality-list {
+        text-align: center;
+        display:none;
+        background-color: #191616;
+        padding:2px;
+    }
+</style>
+    <div id="main" class="main">
+        <div id="StreamPanel" type="text/x-handlebars-template">
+            <div id="stream-player-wrapper" style=" bottom: 0; position: fixed; top: 0; width: 100%; background-color: black;">
+                <div style=" -webkit-transform-style: preserve-3d; -moz-transform-style: preserve-3d; transform-style: preserve-3d; width: 100%; height: 100%;">
+                    <div class='fullscreen fs-max' style="z-index: 300; margin: 0; "></div>
+                    <div class="quality-box">
+                        <div class="current-quality"></div>
+                        <div class="quality-list">
+                          </div>
+                    </div>
+                    <div style="position: absolute; z-index: 200; right: 10px;">
+                        <a onclick="goHome()">
+                            <div class="menu_widget menuTop_logo_white">
+                                <div class="">"_"</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="StreamWindow" style="position: relative; top: 50%; transform: translateY(-50%); ">
+                        <div id="streamPlayer" style="position: relative;margin: auto;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    var fullscreen = false;
+    var timer = null;
+    function onfullscreenchange() {
+                if ($(".fullscreen").hasClass("fs-min")) {
+                    $(".fullscreen").removeClass("fs-min");
+                    $(".fullscreen").addClass("fs-max");
+                } else {
+                    $(".fullscreen").removeClass("fs-max");
+                    $(".fullscreen").addClass("fs-min");
+                }
+            }
+            function toggleFullScreen() {
+                if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+                 (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+                    if (document.documentElement.requestFullScreen) {
+                        document.documentElement.requestFullScreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullScreen) {
+                        document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+                    }
+                } else {
+                    if (document.cancelFullScreen) {
+                        document.cancelFullScreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitCancelFullScreen) {
+                        document.webkitCancelFullScreen();
+                    }
+                }
+            }
+            function goHome() {
+                window.parent.postMessage({ type: 'home' }, "*");
+            }
+
+            function onResize() {
+                if (window.outerWidth == screen.width) {
+                    if (!fullscreen) {
+                        fullscreen = true;
+                        onfullscreenchange(true);
+                    }
+                } else {
+                    if (fullscreen) {
+                        fullscreen = false;
+                        onfullscreenchange(false);
+                    }
+                }
+            };
+            $(document).ready(function () {
+                function showQualitySelector() {
+                    var qlist = $.client.getVideoQualities();
+                    if (qlist && qlist.length > 0) {
+                        var qId = $.client.getVideoQuality();
+                        $(".current-quality").html(qId.toUpperCase());
+                        $.each(qlist, function (i, value) {
+                            var item = $('<div/>');
+                            item.attr("id", value);
+                            item.addClass("quality-item")
+                            item.html(value.toUpperCase());
+                            $(".quality-list").append(item);
+                        });
+                        $(".current-quality").on('click', function (e) {
+                            if ($(".quality-list").is(":visible")) {
+                                $(".quality-list").hide();
+                            } else {
+                                $(".quality-list").show();
+                            }
+                        });
+                        $(".quality-item").on('click', function (e) {
+                            $(".current-quality").html($(e.target).attr("id").toUpperCase());
+                            $.client.setVideoQuality($(e.target).attr("id"));
+                            $(".quality-list").hide();
+                        });
+                    } else {
+                        setTimeout(function () {
+                            showQualitySelector();
+                        }, 500);
+                    }
+                }
+                $.client = new Client(true, function () { }, function () { }).initialize();
+            $.client.getConfiguration(function (config) {
+            $.client.joinGame(function (data) {
+                console.log("user joined");
+                showQualitySelector();
+                $.client.getVideoPlayer('streamPlayer');
+            }, function () {
+                console.log("user not joined");
+            });
+        });
+        $("#stream-player-wrapper").mousemove(function () {
+            clearTimeout(timer);
+            $(".fullscreen").show();
+            $(".quality-box").show();
+            timer = setTimeout(function () {
+                $(".quality-box").hide();
+                $(".fullscreen").hide();
+            }, 1000);
+        }).mouseleave(function () {
+            clearTimeout(timer);
+            $(".fullscreen").hide();
+            $(".quality-box").hide();
+        });
+        $(".fullscreen").on('click', function (event) {
+            toggleFullScreen();
+        });
+
+          window.onresize = onResize;
+          function resizePlayerView() {
+             var  window_sizeW = $(window).width();
+             var window_sizeH = $(window).height();
+              if ((window_sizeW / window_sizeH) > 16 / 9) {
+                  $("#streamPlayer").width(window_sizeH * 16 / 9);
+                  $("#streamPlayer").height(window_sizeH);
+              } else {
+                  $("#streamPlayer").width(window_sizeW);
+                  $("#streamPlayer").height(window_sizeW * 9 / 16);
+              }
+          }
+
+        window.addEventListener('resize', function (event) {
+            resizePlayerView();
+        });
+        resizePlayerView();
+    });
+</script>
+</body>
+</html>

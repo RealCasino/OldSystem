@@ -1,0 +1,170 @@
+﻿<style>
+.frameContainer {
+    overflow: hidden;
+    position: relative; 
+    display: flex;
+    text-align: center; 
+  	background-color: #000;
+    width: 100%;
+	height: 100%;
+	border:2px solid #2f2d30;
+}
+.mobile-frame{
+    overflow: hidden;
+    position: relative; 
+    text-align: center; 
+    width: 100%;
+    background-color: #000;
+    height: 100%;
+    border:2px solid #2f2d30;
+}
+.frame-logo {
+    height: 70px;
+}
+.frame-progress-bar-container {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    position: absolute;
+    top: 0;
+    z-index: 2000;
+}
+.progress-bar-wrapper{
+    position: absolute;
+    z-index: 1;
+    top: 45%;
+    width: 250px;
+    right: 0;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+.frame-progress-bar {
+    height: 5px;
+    border-radius: 3px;
+}
+.progress {
+    width: 0%;
+}
+.expand {
+    height: 1px;
+    margin: 2px 0;
+    background: #7ea025;
+    position: absolute;
+ /*   box-shadow: 0px 0px 10px 1px rgba(154,194,96,0.5);*/
+}
+.ui-button {
+    margin-top: -3px;
+    margin-left: -33px;
+    background: transparent !important;
+    border: 0px !important;
+}
+.casinoLogo {
+     background-image: url(images/casinotv_white.png);
+     background-size: 245px;
+     background-position: 0px 102px;
+     left: 40px;
+     padding-top: 10px;
+     float: left; 
+     position: relative; 
+     z-index: 100; 
+     width: 180px;
+     height:40px;
+}
+.tvLogo {
+     background-image: url(images/casinotv_white.png);
+     background-size: 245px;
+     background-position: 65px 50px;
+    left: 1000px; 
+    float: left; 
+    position: relative; 
+    z-index: 100; 
+    width: 65px;
+    height:50px;
+}
+</style>
+<div class="frame-progress-bar-container" style="display: none">      
+    <div class="progress-bar-wrapper">
+      <div class="frame-progress-bar-container" style="display:none">      
+            <div class="progress-bar-wrapper">
+                <div class="frame-logo" width="300" height="60">
+                    <div id="casinoLogo" class="casinoLogo" style="padding-top: 10px; float: left; position: relative; z-index: 100;"></div>
+                    <div id="tvLogo" class="tvLogo" style="position: relative; z-index: 100;"></div>
+                </div>
+                <div class="frame-progress-bar" width="240">
+                    <span class="expand progress"></span>
+                </div>
+            </div>
+    </div>                                                                                                                                                                                                      
+</div>
+</div>
+<script>
+    var manualGameProgressBar = true, progress = 0;
+    function setProgressBarPercent(pr,callback) {
+        progress = progress < pr ? pr : progress;
+        var percent = progress <= 100 ? progress : 100;
+        var progressBar = $("#progressBar");
+        var bar = $('.progress');
+        var width = (percent / 100 * bar.parent().width()) + 'px';
+        if (bar.parent().width() <= percent / 100 * bar.parent().width()) {
+            if ($('.progress').width() <= bar.parent().width()) {
+                bar.animate({
+                    width: width
+                }, 50, function () {
+                    progressBar.fadeOut(1000, function () {
+                        $("#frame").show();
+                        $(progressBar).remove();
+                    });
+                });
+            }
+        } else {
+            bar.animate({
+                width: width
+            }, 30)
+        }
+        if (percent == 100) {
+            setTimeout(function () {
+                $(".progress-bar-wrapper").fadeOut(2000, function () {
+                    $("#frame").show();
+                    $(".frame-progress-bar-container").remove();
+                    if (callback)
+                        callback();
+                });
+            }, 3500);
+
+        }
+    }
+    $('.frame-progress-bar-container').fadeIn(4000, function () {
+        var n = 30;
+        var imgs = $("#frame").contents().find('img');
+        var val = (90 - n) / imgs.length;
+        imgs.load(function () {
+            n = n + val;
+            setProgressBarPercent(n);
+        });
+    });
+    setTimeout(function () {
+        $("#tvLogo").animate({
+            left: 0,
+        }, 500);
+    }, 1000);
+    setTimeout(function () {
+        $("#casinoLogo").animate({
+            left: 0,
+        }, 200);
+    }, 1400);
+
+    function listener(event) {
+        if (event.data.type == "progress") {
+            manualGameProgressBar = true;
+            setProgressBarPercent(event.data.progress);
+        }
+    }
+
+    if (window.addEventListener) {
+        addEventListener("message", listener, false);
+    } else {
+        attachEvent("onmessage", listener);
+    }
+
+</script>

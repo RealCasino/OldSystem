@@ -1,0 +1,14 @@
+{
+    "Fruits": {
+        "layout": {
+            "default": {
+                "direction": "Landscape",
+                "aspectRatio": "16x9"
+            },
+             "mobile":{
+                "direction":"Landscape",
+                "aspectRatio":"16x9"
+             }
+        }
+    }
+}

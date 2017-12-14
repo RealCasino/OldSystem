@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Casino TV - Slot Fruits</title>
+        <meta name="msapplication-tap-highlight" content="no"/>
+        <link rel="stylesheet" href="css/main.css" type="text/css">
+
+        <script src="/_GameScripts/jquery-2.1.1.min.js"> </script>
+        <script src='/_GameScripts/Config.js'></script>
+        <script src="/_GameScripts/FontLoader.js"></script>
+        <script src="/_GameScripts/Client.js"></script>
+
+    </head>
+    <body ondragstart="return false;" ondrop="return false;" >
+        <canvas id="canvas" class='ani_hack' width="1500" height="640"> </canvas>
+
+        <script src="js/MessageDispatcher.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $.client = new Client().initialize(function (msg) {
+                    console.log('msg', msg);
+                    MessageDispatcher.handle(msg);
+                }, function (err) {
+                    console.log(err);
+                });
+                console.log('$.client1' , $.client);
+
+                $.client.setProgressBarPercent(10);
+
+                function startGame(config) {
+                    var canvas;
+                    var fontLoader = new FontLoader(["arialbold"], {
+                        "fontsLoaded": function (error) {
+                            if (error !== null) {
+                                console.log(error);
+                                console.log("Wait for fonts loaded");
+                                setTimeout(function () {
+                                    startGame(config);
+                                }, 2000);
+                            } else {
+                                console.log('done')
+                            }
+                        }
+                    });
+                    fontLoader.loadFonts();
+                }
+
+                $.client.getConfiguration(function (config) {
+                    startGame(config);
+                });
+            });
+
+
+        </script>
+    </body>
+</html>

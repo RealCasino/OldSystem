@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{65F09C42-B82C-4E80-A17A-15E5CCFBB1AD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GameCommons</RootNamespace>
+    <AssemblyName>GameCommons</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\Lib\NHibernate\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Noesis.Javascript">
+      <HintPath>..\Lib\Noesis JS\Release\x64\Noesis.Javascript.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Classes\AccountingHelper.cs" />
+    <Compile Include="Classes\Callbacks\CallbackWrapper.cs" />
+    <Compile Include="Classes\DelayedTask.cs" />
+    <Compile Include="Classes\ExternalDatasource.cs" />
+    <Compile Include="Classes\GameMediaHelper.cs" />
+    <Compile Include="Classes\GameStateEnum.cs" />
+    <Compile Include="Classes\IAccountingFacade.cs" />
+    <Compile Include="Classes\IAccountingFacadeFactory.cs" />
+    <Compile Include="Classes\IGamesPullCallback.cs" />
+    <Compile Include="Classes\ILiveReportTracker.cs" />
+    <Compile Include="Classes\IScriptedGameServerRole.cs" />
+    <Compile Include="Classes\JavascriptContextFactory.cs" />
+    <Compile Include="Classes\LocaleInfo.cs" />
+    <Compile Include="Classes\RNGWrapper.cs" />
+    <Compile Include="Classes\RoundCounter.cs" />
+    <Compile Include="Classes\ScriptedGameContext.cs" />
+    <Compile Include="Classes\ScriptedGameInstance.cs" />
+    <Compile Include="Classes\ScriptedGameRuntime.cs" />
+    <Compile Include="Classes\ScriptedGameWrapper.cs" />
+    <Compile Include="Classes\ScriptedGameWrapperEventArgs.cs" />
+    <Compile Include="Classes\ServerMessageTypeEnum.cs" />
+    <Compile Include="Classes\SessionStreamWrapper.cs" />
+    <Compile Include="Classes\SessionWrapper.cs" />
+    <Compile Include="Classes\StorageHelper.cs" />
+    <Compile Include="Classes\UserBet.cs" />
+    <Compile Include="Classes\UserBetStore.cs" />
+    <Compile Include="Classes\UserInfo.cs" />
+    <Compile Include="Classes\UserWinData.cs" />
+    <Compile Include="Classes\UserWinItemData.cs" />
+    <Compile Include="Classes\VodPacketTypeEnum.cs" />
+    <Compile Include="Classes\WCF\BaseExternalGameInfoService.cs" />
+    <Compile Include="Classes\WCF\IExternalGameInfoService.cs" />
+    <Compile Include="Classes\WebServiceFixedTypeMapper.cs" />
+    <Compile Include="Classes\WebSocketWrapper.cs" />
+    <Compile Include="Enums\CasinoTvResponseCodeEnum.cs" />
+    <Compile Include="Helpers\GameRandomHelper.cs" />
+    <Compile Include="Helpers\TokenHelper.cs" />
+    <Compile Include="Enums\LiveActivityTypeEnum.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Commons\Commons.csproj">
+      <Project>{4273a55f-5d52-413d-9028-2700be82a2e1}</Project>
+      <Name>Commons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebCommons\WebCommons.csproj">
+      <Project>{15d208cc-8b01-43d1-b6d8-40bc3e5b60d9}</Project>
+      <Name>WebCommons</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Lib\Noesis JS\Release\x64\icudt.dll">
+      <Link>icudt.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

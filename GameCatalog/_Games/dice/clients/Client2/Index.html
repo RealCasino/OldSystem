@@ -1,0 +1,113 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css">
+    <script src='/_GameScripts/Config.js'> </script>
+    <script src="/_GameScripts/jquery-2.1.1.min.js"> </script>
+    <script src="/_GameScripts/phaser.min.js"></script>
+    <script src="/_GameScripts/phaser.gesture.js"></script>
+    <script src="/_GameScripts/Client.js"> </script>
+    <script src="/_GameScripts/DateFormat.js"></script>
+    <script src="/_GameScripts/FontLoader.js"></script>
+    <script src="js/MessageDispatcher.js"></script>
+    <script src="js/LandscapeGame.js"></script>
+    <script src="js/PortraitGame.js"></script>
+    <script src="/GameCatalog/_GameScripts/phaser.utils.js"></script>
+    <script>
+
+    </script>
+    <script type="text/javascript">
+        var game,
+            mode, Game;
+        GAME_WIDTH = 640;
+        GAME_HEIGHT = 1136;
+        SCALE = 1;
+        var modes = {
+            portrait: 0,
+            landscape: 1
+        };
+        $(document).ready(function () {
+            mode = modes.portrait;
+            if (isMobile.pad() || !isMobile.any()) {
+                GAME_WIDTH = 1620;
+                GAME_HEIGHT = 996;
+                mode = modes.landscape;
+                Game = DiceLandscapeGame;
+            } else {
+                GAME_WIDTH = 750;
+                GAME_HEIGHT = 1334;
+                mode = modes.portrait;
+                Game = DicePortraitGame;
+            }
+            SCALE = Math.min($(document).innerWidth() / GAME_WIDTH, $(document).innerHeight() / GAME_HEIGHT);
+            game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.CANVAS, 'canvas', null, true);
+            $.client = new Client().initialize(function (msg) {
+                MessageDispatcher.handle(msg);
+            }, function (err) {
+                console.log(err);
+            });
+            $.client.setProgressBarPercent(50);
+
+            function startGame(config) {
+                var fontLoader = new FontLoader(["ProximaNova"], {
+                    "fontsLoaded": function (error) {
+                        if (error !== null) {
+                            console.log(error);
+                            console.log("Wait for fonts loaded");
+                            setTimeout(function () {
+                                startGame(config);
+                            }, 2000);
+                        } else {
+                            game.state.add('Boot', Game.Boot);
+                            game.state.add('Preloader', Game.Preloader);
+                            game.state.add('Game', Game.Game);
+                            game.state.start('Boot');
+                            $.client.joinGame(function (data) {
+                                console.log("user joined");
+                            }, function () {
+                                console.log("user not joined");
+                            });
+
+                        }
+                    }
+                });
+                fontLoader.loadFonts();
+            }
+
+            $.client.getConfiguration(function (config) {
+                startGame(config);
+            });
+        });
+        function changeVideoSize() {
+            var video, canvas, getTopPos, topPos, leftPos, videoHeight, videoWidth;
+            canvas = $("#canvas canvas");
+            if (mode == modes.portrait) {
+                video = $("#portrait_video");
+                videoHeight = canvas.height() / 100 * 32;
+                videoWidth = canvas.width();
+                video.width(videoWidth);
+                video.height(videoHeight);
+            } else {
+                video = $("#landscape_video");
+                videoWidth = canvas.width() / 100 * 86;
+                videoHeight =videoWidth/16*9;
+                video.width(videoWidth);
+                video.height(videoHeight);
+                topPos = ((canvas.height() / 100 * 84) - videoHeight) / 2;
+                leftPos = (window.innerWidth - canvas.width()) / 2;
+                video.css({ top: topPos, left: leftPos });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="main" class="main">
+        <div id="content" style="">
+            <div id="portrait_video" class="portrait_video" style="display: none;"></div>
+            <div sr id="landscape_video" class="landscape_video" style="display:none"></div>
+            <div id="canvas" style="z-index:10"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<style>
+        body {
+        background-color: #D6D5D8;
+        }
+     .verify-form {
+         background: #02461A;
+         border: 2px solid #212429;
+         border-radius: 8px;
+         color: #fff;
+         margin: 0 auto;
+         padding: 15px 10px 15px 25px;
+         position: fixed;
+         position: relative;
+         width: 450px;
+         z-index: 9;
+     }
+
+    p, li {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .verify-form p { height: 45px; }
+
+    .single .single-side .verify-form label {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        width: 90px;
+    }
+
+    label {
+        display: inline-block;
+        font-weight: 700;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+
+    .form-control {
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        color: #555;
+        display: block;
+        font-size: 14px;
+        height: 34px;
+        line-height: 1.42857143;
+        padding: 6px 12px;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        width: 100%;
+    }
+
+    button, input, select, textarea {
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    input {
+        float: left;
+        line-height: normal;
+    }
+
+    .form-control {
+        float: left;
+        width: 89%
+    }
+
+    .error { border: 2px solid #F50404; }
+
+    button, input, optgroup, select, textarea {
+        color: inherit;
+        font: inherit;
+        margin: 0;
+    }
+
+    * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    verify-form .verified i.passed { color: #3CB005; }
+
+    .single .single-side .verify-form .verified i {
+        font-size: 25px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    body .btn {
+        background: #3EF320;
+        border: 0;
+        border-radius: 3px;
+        color: #000;
+        cursor: pointer;
+        float: right;
+        font-size: 13px;
+        font-weight: 700;
+        height: 35px;
+        letter-spacing: 1px;
+        padding: 9px 13px;
+        text-transform: uppercase;
+    }
+
+    .verified { 
+        font-size: 28px;      
+        display: none;
+    }
+
+    .fa-check {
+            background-position: 0px 0px;
+    }
+
+    .fa {
+        padding: 0 5px;
+        display: table;
+        width: 35px;
+        height: 35px;
+        background-image: url("../Images/validation_ico.png");
+    }
+
+    .fa-exclamation-triangle {
+     background-position: -35px 0px;
+    }
+</style>
+<script src="/_GameScripts/jquery-2.1.1.min.js"></script>
+<script src="/_GameScripts/sha256.js"></script>
+<script src="/_GameScripts/mt.js"></script>
+<script src="/_GameScripts/Client.js"></script>
+
+<script>
+    function getQueryParams(qs) {
+        qs = qs.split("+").join(" ");
+        var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+        return params;
+    }
+    function byteArrayToInt(byteArray) {
+        var value = 0;
+        for (var i = 0; i < byteArray.length; i++) {
+            value = (value * 256) + byteArray[i];
+        }
+        return value;
+    };
+    function verify() {
+        var params = getQueryParams(unescape(document.location.search));
+        var hash = Sha256.hash($("#server-seed").val() + $("#initial-shuffle").val());
+        var seedHash = Sha256.hash($("#client-seed").val() +$("#server-seed").val());
+        var hashBytes = [];
+        for (var i = 0; i < seedHash.length; i += 2) {
+            hashBytes.push(parseInt(seedHash.substr(i, 2), 16));
+        }
+        var seed = byteArrayToInt(hashBytes.splice(0, 4));
+        var mt = new MersenneTwister(seed);
+        var initialShuffle = $("#initial-shuffle").val();
+        var deck = initialShuffle.substr(1, initialShuffle.length - 2).split(',');
+        var count = deck.length;
+        for (var i = 0; i < deck.length; i++) {
+            var index = mt.nextInt(0, count);
+            var temp = deck[index];
+            deck[index] = deck[i];
+            deck[i] = temp;
+        }
+        var finalShuffle = "";
+        if (deck && deck.length > 0 && $("#initial-shuffle").val())
+            finalShuffle = JSON.stringify(deck);
+       $("#final-shuffle").val(finalShuffle);
+       $('input').change();
+       if (hash !== $("#hash").val()) {
+           $("#hash").addClass('error');
+           $("#hash").parent().find('i').removeClass('fa-check');
+           $("#hash").parent().find('i').addClass('fa-exclamation-triangle');
+       } else {
+           $("#hash").removeClass('error');
+           $("#hash").parent().find('i').removeClass('fa-exclamation-triangle');
+           $("#hash").parent().find('i').addClass('fa-check');
+       }
+    }
+    $(document).ready(function () {
+        if (isMobile.any()) {
+            $("#main").css("zoom", 2)
+        }
+        $(".form-control").change(function() {
+            if (!$(this).val()) {
+                $(this).addClass('error');
+                $(this).parent().find('i').removeClass('fa-check');
+                $(this).parent().find('i').addClass('fa-exclamation-triangle');
+            } else {
+                $(this).removeClass('error');
+                $(this).parent().find('i').removeClass('fa-exclamation-triangle');
+                $(this).parent().find('i').addClass('fa-check');
+            }
+            $(this).parent().find('.verified').show();
+        });
+        var params = getQueryParams(unescape(document.location.search));
+        $("#hash").val(params.hash);
+        $("#initial-shuffle").val(params.initialShuffle);
+        $("#server-seed").val(params.serverSeed);
+        $("#client-seed").val(params.clientSeed);
+        verify();
+    });
+</script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<div id="main" class="main">
+    <div id="content" style="font-size: 55px">
+        <div class="verify-form">
+            <p>
+                <label>Server seed hash</label><input id="hash" class="form-control"><span class="verified" id="sha_verified"><i class="fa fa-check"></i></span></p>
+            <p>
+                <label>Initial Shuffle</label><input id="initial-shuffle" class="form-control"><span class="verified" id="initial_verified"><i class="fa fa-check"></i></span></p>
+            <p>
+                <label>Server Seed</label><input id="server-seed" class="form-control"><span class="verified" id="dealer_verified"><i class="fa fa-check"></i></span></p>
+            <p>
+                <label>Client Seed</label><input id="client-seed" class="form-control"><span class="verified" id="player_verified"><i class="fa fa-check"></i></span></p>
+            <p>
+                <label>Final Shuffle</label><input id="final-shuffle" class="form-control"><span class="verified" id="final_verified"><i class="fa fa-check"></i></span></p>
+            <p>
+                <label></label><a id="verify" onclick="verify()" class="btn btn-primary">Verify</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

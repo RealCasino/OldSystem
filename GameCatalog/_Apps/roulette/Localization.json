@@ -1,0 +1,9 @@
+{
+  "en": {
+    "Result": "Result: {$number}",
+    "Round canceled": "Round canceled",
+    "Table closed": "Table closed",
+    "Table opened": "Table opened",
+    "Place your bets": "Place your bets"
+  }
+}

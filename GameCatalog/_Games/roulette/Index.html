@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="../../_GameScripts/phaser.min.js"></script>
+    <script src="../../_GameScripts/jquery-2.1.1.min.js"> </script>
+    <script src='../../_GameScripts/Config.js'></script>
+    <script src="../../_GameScripts/Client.js"></script>
+    <script src="../../_GameScripts/DateFormat.js"></script>
+</head>
+<body>
+
+    <div id="main" class="main">
+        <div id="content" style="">
+            <div id="canvas"></div>
+            <div id="portrait_video" class="portrait_video" style="display:none"></div>
+            <div id="landscape_video" class="landscape_video" style="display:none"></div>
+        </div>
+    </div>
+    <script src="js/MessageDispatcher.js"></script>
+    <script src="js/LandscapeGame.js"></script>
+    <script src="js/PortraitGame.js"></script>
+
+    <script type="text/javascript">
+        var game,
+            mode, Game;
+        GAME_WIDTH = 640;
+        GAME_HEIGHT = 1136;
+        SCALE = 1;
+        var modes = {
+            portrait: 0,
+            landscape: 1
+        };
+        $(document).ready(function () {
+            if ($(document).innerWidth() / $(document).innerHeight() > 1) {
+                GAME_WIDTH = 1024;
+                GAME_HEIGHT = 768;
+                mode = modes.landscape;
+                Game = RouletteLandscapeGame;
+            } else {
+                mode = modes.portrait;
+                Game = RoulettePortraitGame;
+            }
+            SCALE = Math.min($(document).innerWidth() / GAME_WIDTH, $(document).innerHeight() / GAME_HEIGHT);
+            $.client = new Client().initialize(function (msg) {
+                MessageDispatcher.handle(msg);
+            }, function (err) {
+                console.log(err);
+            });
+            $.client.setProgressBarPercent(50);
+   
+            $.client.getConfiguration(function (config) {
+                game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, 'canvas', null, true);
+                game.state.add('Boot', Game.Boot);
+                game.state.add('Preloader', Game.Preloader);
+                game.state.add('MainMenu', Game.MainMenu);
+                game.state.start('Boot');
+                $.client.joinGame(function (data) {
+                    console.log("user joined");
+                }, function () {
+                    console.log("user not joined");
+                });
+            });
+        });
+        function changeVideoSize() {
+            var video, canvas, getTopPos, topPos, leftPos, videoHeight, videoWidth;
+            canvas = $("#canvas canvas");
+            if (mode == modes.portrait) {
+                video = $("#portrait_video");
+                videoHeight = canvas.height() / 100 * 40;
+                videoWidth = canvas.width() / 100 * 90;
+                video.width(videoWidth);
+                video.height(videoHeight);
+                getTopPos = video.position().top;
+                topPos = (canvas.height() / 2) - (videoHeight / 2) + 'px';
+                leftPos = (window.innerWidth / 2) - (videoWidth / 2) + 'px';
+                if (getTopPos > 0) {
+                    video.css({ top: topPos, left: leftPos });
+                }
+            } else {
+                video = $("#landscape_video");
+                if (canvas.width() > 500) {
+                    videoHeight = canvas.height() / 100 * 54.1;
+                    videoWidth = canvas.width() / 100 * 61.6;
+                } else {
+                    videoHeight = canvas.height() / 100 * 53.2;
+                    videoWidth = canvas.width() / 100 * 60.6;
+                }
+                video.width(videoWidth);
+                video.height(videoHeight);
+                topPos = canvas.height() / 100 * 8 + 'px';
+                leftPos = (window.innerWidth - canvas.width()) / 2 + canvas.width() / 100 * 4.2 + 'px';
+                video.css({ top: topPos, left: leftPos });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+﻿<div id="LobbyPanel" type="text/x-handlebars-template">
+    <div class="desktop">
+        <div class="lobby-wrapper">
+            <div class="lobby-side-column">
+                <div class="lobby-top-categories-bar">
+                    <div class="lobby-top-categories-bar-title">Categories</div>
+                    <div class="lobby-top-group-categories-bar clearfix">
+                        <div data-id="all" index="0" class="category-item lobby-top-category-item selected">All</div>
+                    </div>
+                    {{#each categories}}
+                    <div class="lobby-top-group-categories-bar clearfix">
+                        <div data-id="category-{{@index}}" index="{{@index}}" class="category-item lobby-top-category-item ">{{title}}</div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="lobby-category-wrapper">
+                {{#each categories}}
+                <div id="category-{{@index}}" class="category-wrapper">
+                    <div class="category-title">
+                        <h2 style="font-size: 16px;">{{title}}</h2>
+                    </div>
+                    {{#each games}}
+                    <div class="game-block">
+                        <div class="game-item-preview">
+                            <div class="preview">
+                                {{#if featuredUrl}}
+                                <div class="game-item-image" style="background-image: url('{{featuredUrl}}');"></div>
+                                {{else}}
+                                <div class="game-item-image" style="background-image: url('{{thumbnailUrl}}');"></div>
+                                {{/if}}
+                            </div>
+                            <div class="game-title">{{title}}</div>
+                        </div>
+                        <div class="game-item-detail">
+                            <div class="game-item-detail-dark">
+                                <div class="preview">
+                                    {{#if featuredUrl}}
+                                    <div class="game-item-image" style="background-image: url('{{featuredUrl}}');"></div>
+                                    {{else}}
+                                    <div class="game-item-image" style="background-image: url('{{thumbnailUrl}}');"></div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="game-item-playbtn-container">
+                                <div class="game_btn">
+                                    <div class="game-item-playbtn" data-game-id="{{gameId}}" data-loader-url="{{loaderUrl}}" data-instance="{{instanceId}}">
+                                        PLAY
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="game-title">{{title}}</div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
